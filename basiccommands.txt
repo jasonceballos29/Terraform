@@ -1,0 +1,17 @@
+terraform init
+
+terraform plan
+
+terraform destroy
+
+terraform 
+
+export TF_LOG=TRACE
+#Enable verbose logging
+
+exsport TF_LOG=
+#Disables verbose logging
+
+terraform fmt
+#format main.tf file on your working directory
+
