@@ -2,6 +2,9 @@ terraform init
 
 terraform plan
 
+terraform apply
+#Deploys the resources you built in your plan.
+
 terraform destroy
 
 terraform 
