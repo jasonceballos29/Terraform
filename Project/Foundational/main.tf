@@ -100,7 +100,7 @@ resource "aws_route_table" "project_routingtable" {
 # Associate routing table with VPC
 resource "aws_route_table_association" "AppRouteAssociation" {
     subnet_id = aws_vpc.project_vpc.id
-    route_table_id = aws_routing_table
+    route_table_id = aws_routing_table.project_routingtable.id
 }
 # Create Internet Gateway
 resource "aws_internet_gateway" "project_IG" {
