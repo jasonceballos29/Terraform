@@ -237,31 +237,28 @@ resource "aws_instance" "Web2" {
 # Create the RDS DB Server and attach it to the DB_SG security group. Deployed to private subnet2 in this example.
 # Also configured credentials in variable file and specified instance details.
 resource "aws_db_instance" "project_database" {
-    tags = {
-        "Name" = "DBServer1"
-        }
         count = 1
-        Name = "DBServer1"
         allocated_storage = 5
         engine  = "mysql"
         instance_class = "db.t2.micro"
         username = var.db_username
         password = var.db_password
-        db_subnet_group_name = "${aws_db_subnet_group.db-subnet.name}"
-        subnet_id = aws_subnet.projectdb_subnet2.id
-        key_name = "WebKey"
-        security_groups = [ aws_security_group.DB_SG.id ]
+        vpc_security_group_ids = [aws_security_group.DB_SG.id]
+        db_subnet_group_name   = aws_db_subnet_group.db-subnet.id
         publicly_accessible = false
         skip_final_snapshot = true
+        tags = {
+        "Name" = "DBServer1"
+        }
 }
 # Need this section to copy the private key to the DB Server for remote SSH access since they are not accessible from the web
-# Copies the private key to each EC2 instance under the home directory on the DB Server
-resource "null_resource" "Copy_Key_EC2" {
-    depends_on = [
-      aws_instance.Web1
-    ]
-    provisioner "local-exec" {
-        command = "scp -o StrictHostKeyChecking=no -i WebKey.pem WebKey.pem ec2-user@${aws_instance.Web1[0].public_ip}:/home/ec2-user"
-    }
+# # Copies the private key to each EC2 instance under the home directory on the DB Server
+# resource "null_resource" "Copy_Key_EC2" {
+#     depends_on = [
+#       aws_instance.Web1
+#     ]
+#     provisioner "local-exec" {
+#         command = "scp -o StrictHostKeyChecking=no -i WebKey.pem WebKey.pem ec2-user@${aws_instance.Web1[0].public_ip}:/home/ec2-user"
+#     }
   
-}
+# }
