@@ -216,7 +216,7 @@ resource "aws_elb" "example" {
 # Create the web server instances using AMIs from us-east-1 region. This is region specific
 resource "aws_instance" "Web1" {
     ami = "ami-0cff7528ff583bf9a"
-    instance_type = "t2-micro"
+    instance_type = "t2.micro"
     tags = {
       "Name" = "WebServer1"
     }
@@ -227,7 +227,7 @@ resource "aws_instance" "Web1" {
 }
 resource "aws_instance" "Web2" {
     ami = "ami-0cff7528ff583bf9a"
-    instance_type = "t2-micro"
+    instance_type = "t2.micro"
     tags = {
       "Name" = "WebServer2"
     }
