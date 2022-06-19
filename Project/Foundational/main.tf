@@ -112,8 +112,13 @@ resource "aws_route_table" "project_routingtable" {
 }
 
 # Route table association with public subnets
-resource "aws_route_table_association" "AppRouteAssociation" {
-    subnet_id = ["${aws_subnet.pubsub_1.id}", "${aws_subnet.pubsub_2.id}"]
+resource "aws_route_table_association" "pubsub_1" {
+    subnet_id = aws_subnet.pubsub_1.id #first public subnet
+    route_table_id = aws_route_table.project_routingtable.id
+}
+
+resource "aws_route_table_association" "pubsub_2" {
+    subnet_id = aws_subnet.pubsub_2.id #second public subnet
     route_table_id = aws_route_table.project_routingtable.id
 }
 
