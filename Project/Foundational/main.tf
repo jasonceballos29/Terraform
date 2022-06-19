@@ -144,7 +144,7 @@ resource "aws_security_group" "AppSG" {
 # Create security group for DB Servers
 resource "aws_security_group" "DB_SG" {
     name = "DB_SG"
-    description = "Allow weh inbound traffic"
+    description = "Allow inbound traffic from App Tier Only"
     vpc_id = aws_vpc.project_vpc.id
     ingress {
       cidr_blocks = [ "0.0.0.0/0" ]
