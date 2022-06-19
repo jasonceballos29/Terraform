@@ -25,6 +25,29 @@ resource "aws_vpc" "project_vpc" {
         Name = "project_vpc"
     }
 }
+# Create Internet Gateway
+resource "aws_internet_gateway" "project_IG" {
+    tags = {
+        Name = "Project_IG"
+    }
+    vpc_id = aws_vpc.project_vpc.id
+    depends_on = [
+      aws_vpc.project_vpc
+    ]
+}
+# Add default route in routing table to point to Internet Gateway
+resource "aws_route" "project_route" {
+    route_table_id = aws_route_table_association.AppRouteAssociation.id
+    destination_cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.project_IG.id  
+}
+
+# Associate routing table with VPC
+resource "aws_route_table_association" "AppRouteAssociation" {
+    subnet_id = aws_vpc.project_vpc.id
+    route_table_id = aws_route_table.project_routingtable.id
+}
+
 # Create the web server public subnets
 resource "aws_subnet" "pubsub_1" {
     tags = {
@@ -97,27 +120,6 @@ resource "aws_route_table" "project_routingtable" {
     }
 }
 
-# Associate routing table with VPC
-resource "aws_route_table_association" "AppRouteAssociation" {
-    subnet_id = aws_vpc.project_vpc.id
-    route_table_id = aws_route_table.project_routingtable.id
-}
-# Create Internet Gateway
-resource "aws_internet_gateway" "project_IG" {
-    tags = {
-        Name = "Project_IG"
-    }
-    vpc_id = aws_vpc.project_vpc.id
-    depends_on = [
-      aws_vpc.project_vpc
-    ]
-}
-# Add default route in routing table to point to Internet Gateway
-resource "aws_route" "project_route" {
-    route_table_id = aws_route_table_association.AppRouteAssociation.id
-    destination_cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.project_IG.id  
-}
 # Create security group for Web Servers
 resource "aws_security_group" "AppSG" {
     name = "AppSG"
