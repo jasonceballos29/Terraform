@@ -51,7 +51,7 @@ resource "aws_subnet" "pubsub_2" {
     ]
     }
 # Create the DB Server private subnets
-resource "aws_subnet" "projectdb_subnet" {
+resource "aws_subnet" "projectdb_subnet1" {
     tags = {
         Name = "DBSubnet" 
     }
@@ -81,12 +81,22 @@ resource "aws_db_subnet_group" "db-subnet" {
     subnet_ids = ["${aws_subnet.projectdb_subnet1.id}", "${aws_subnet.projectdb_subnet2.id}"]
 }      
 # Define routing table for Public Subnets
-resource "aws_routing_table" "project_routingtable" {
-    tags ={
+resource "aws_route_table" "project_routingtable" {
+    vpc_id = aws.aws_vpc.project_vpc
+
+    route {
+        cidr_block = "10.0.1.0/24"
+        gateway_id = aws_internet_gateway.project_IG.id
+    }
+    route {
+        cidr_block = "10.0.2.0/24"
+        gateway_id = aws_internet_gateway.project_IG.id
+  }
+    tags = {
         Name = "project_routingtable"
     }
-    vpc_id = aws.aws_vpc.project_vpc
 }
+
 # Associate routing table with VPC
 resource "aws_route_table_association" "AppRouteAssociation" {
     subnet_id = aws_vpc.project_vpc.id
