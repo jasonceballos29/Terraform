@@ -189,7 +189,7 @@ resource "local_file" "WebKey" {
 }
 
 ### Creating ELB
-resource "aws_elb" "example" {
+resource "aws_elb" "project_elb" {
     tags = {
         Name = "project-terraform-elb"
     }
