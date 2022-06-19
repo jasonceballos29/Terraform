@@ -210,7 +210,8 @@ resource "aws_elb" "example" {
 
 }
 
-# Create the web server instances using AMIs from us-east-1 region. This is region specific
+# Create the web server instances using AMIs from us-east-1 region. This is region specific.
+# Uses WebKey generated previously
 resource "aws_instance" "Web1" {
     ami = "ami-0cff7528ff583bf9a"
     instance_type = "t2.micro"
