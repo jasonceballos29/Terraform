@@ -77,12 +77,12 @@ resource "aws_subnet" "projectdb_subnet2" {
 }
 # Create a private subnet group for the DB Servers
 resource "aws_db_subnet_group" "db-subnet" {
-    name = "DB subnet group"
+    name = "db_subnet"
     subnet_ids = ["${aws_subnet.projectdb_subnet1.id}", "${aws_subnet.projectdb_subnet2.id}"]
 }      
 # Define routing table for Public Subnets
 resource "aws_route_table" "project_routingtable" {
-    vpc_id = aws.aws_vpc.project_vpc
+    vpc_id = aws_vpc.project_vpc.id
 
     route {
         cidr_block = "10.0.1.0/24"
@@ -100,7 +100,7 @@ resource "aws_route_table" "project_routingtable" {
 # Associate routing table with VPC
 resource "aws_route_table_association" "AppRouteAssociation" {
     subnet_id = aws_vpc.project_vpc.id
-    route_table_id = aws_routing_table.project_routingtable.id
+    route_table_id = aws_route_table.project_routingtable.id
 }
 # Create Internet Gateway
 resource "aws_internet_gateway" "project_IG" {
@@ -114,7 +114,7 @@ resource "aws_internet_gateway" "project_IG" {
 }
 # Add default route in routing table to point to Internet Gateway
 resource "aws_route" "project_route" {
-    route_table_id = aws_route_table_association.project_routingtable.id
+    route_table_id = aws_route_table_association.AppRouteAssociation.id
     destination_cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.project_IG.id  
 }
