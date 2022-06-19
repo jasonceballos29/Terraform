@@ -191,12 +191,12 @@ resource "aws_elb" "example" {
     name = "project-terraform-elb"
     internal = false
     availability_zones = ["us-east-1a", "us-east-1b"]
-    listener = [{
+    listener {
         instance_port     = "80"
         instance_protocol = "HTTP"
         lb_port           = "80"
         lb_protocol       = "HTTP"
-    }]
+    }
     health_check {
         healthy_threshold = 2
         unhealthy_threshold = 2
