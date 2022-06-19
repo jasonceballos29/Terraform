@@ -36,13 +36,6 @@ resource "aws_internet_gateway" "project_IG" {
     ]
 }
 
-# Add default route in routing table to point to Internet Gateway
-resource "aws_route" "AppServers" {
-    route_table_id = aws_route_table_association.pubsub_1.id
-    destination_cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.project_IG.id  
-}
-
 # Create the web server public subnets
 resource "aws_subnet" "pubsub_1" {
     tags = {
@@ -120,6 +113,14 @@ resource "aws_route_table_association" "pubsub_1" {
 resource "aws_route_table_association" "pubsub_2" {
     subnet_id = aws_subnet.pubsub_2.id #second public subnet
     route_table_id = aws_route_table.project_routingtable.id
+}
+
+# Add default route in routing table to point traffic to Internet Gateway
+resource "aws_route" "project-route-igw" {
+  route_table_id            = aws_route_table.project_routingtable.id
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id                = aws_internet_gateway.project_IG.id
+  depends_on                = [aws_route_table.project_routingtable]
 }
 
 # Create security group for Web Servers
