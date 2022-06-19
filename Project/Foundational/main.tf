@@ -37,8 +37,14 @@ resource "aws_internet_gateway" "project_IG" {
 }
 
 # Add default route in routing table to point to Internet Gateway
-resource "aws_route" "project_route" {
-    route_table_id = aws_route_table_association.AppRouteAssociation.id
+resource "aws_route" "pubsub_1" {
+    route_table_id = aws_route_table_association.pubsub_1.id
+    destination_cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.project_IG.id  
+}
+
+resource "aws_route" "pubsub_2" {
+    route_table_id = aws_route_table_association.pubsub_2.id
     destination_cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.project_IG.id  
 }
