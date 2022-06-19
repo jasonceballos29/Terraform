@@ -96,7 +96,7 @@ resource "aws_subnet" "db_subnet2" {
 # Create a private subnet group for the DB Servers
 resource "aws_db_subnet_group" "db-subnet" {
     name = "db_subnet"
-    subnet_ids = ["${aws_subnet.projectdb_subnet1.id}", "${aws_subnet.projectdb_subnet2.id}"]
+    subnet_ids = ["${aws_subnet.db_subnet1.id}", "${aws_subnet.db_subnet2.id}"]
 }      
 # Attach routing table to Internet Gateway
 resource "aws_route_table" "project_routingtable" {
@@ -113,7 +113,7 @@ resource "aws_route_table" "project_routingtable" {
 
 # Route table association with public subnets
 resource "aws_route_table_association" "AppRouteAssociation" {
-    subnet_ids = ["${aws_subnet.projectdb_pubsub1.id}", "${aws_subnet.pubsub2.id}"]
+    subnet_id = ["${aws_subnet.projectdb_pubsub1.id}", "${aws_subnet.pubsub2.id}"]
     route_table_id = aws_route_table.project_routingtable.id
 }
 
