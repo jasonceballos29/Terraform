@@ -37,14 +37,8 @@ resource "aws_internet_gateway" "project_IG" {
 }
 
 # Add default route in routing table to point to Internet Gateway
-resource "aws_route" "pubsub_1" {
+resource "aws_route" "AppServers" {
     route_table_id = aws_route_table_association.pubsub_1.id
-    destination_cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.project_IG.id  
-}
-
-resource "aws_route" "pubsub_2" {
-    route_table_id = aws_route_table_association.pubsub_2.id
     destination_cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.project_IG.id  
 }
@@ -241,7 +235,7 @@ resource "aws_instance" "Web2" {
       "Name" = "WebServer2"
     }
     count = 1
-    subnet_id = aws_subnet.pubsub_1.id
+    subnet_id = aws_subnet.pubsub_2.id
     key_name = "WebKey"
     security_groups = [ aws_security_group.AppSG.id ]  
 }
