@@ -20,4 +20,8 @@ provider "docker" {}
 
 provider "aws" {
   region = var.region
+  # If you are running from AWS EC2 Linux instance, please use the credentials section below:
+  # shared_credentials_file = "$HOME/.aws/credentials"
+  # profile = "default"
+
 }

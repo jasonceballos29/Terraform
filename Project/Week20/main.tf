@@ -4,30 +4,30 @@
 
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "project-ecs-cluster"
+}
+
+resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_providers" {
+  cluster_name = aws_ecs_cluster.ecs_cluster.name
 
   capacity_providers = ["FARGATE_SPOT", "FARGATE"]
 
   default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
     capacity_provider = "FARGATE_SPOT"
   }
-
-  setting {
-    name  = "containerInsights"
-    value = "disabled"
-  }
 }
-
 module "ecs-fargate" {
   source  = "umotif-public/ecs-fargate/aws"
   version = "~> 6.1.0"
 
-  name_prefix        = "ecs-fargate-example"
+  name_prefix        = "ecs-fargate-week20"
   vpc_id             = aws_vpc.ecs_vpc.id
-  private_subnet_ids = [aws_subnet.priv_subnet_1.id, aws_subnet.priv_subnet_2.id]
+  private_subnet_ids = [aws_subnet.priv_subnet1.id, aws_subnet.priv_subnet2.id]
 
-  cluster_id = aws_ecs_cluster.cluster.id
+  cluster_id = aws_ecs_cluster.ecs_cluster.id
 
-  task_container_image   = "centos"
+  task_container_image   = var.app_image
   task_definition_cpu    = 256
   task_definition_memory = 512
 
@@ -38,7 +38,7 @@ module "ecs-fargate" {
 
   target_groups = [
     {
-      target_group_name = "tg-fargate-example"
+      target_group_name = "tg-fargate-project"
       container_port    = 80
     }
   ]
@@ -49,7 +49,7 @@ module "ecs-fargate" {
   }
 
   tags = {
-    Environment = "test"
-    Project     = "Test"
+    Environment = "Dev"
+    Project     = "Week20"
   }
 }

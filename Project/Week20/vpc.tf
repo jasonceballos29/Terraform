@@ -6,6 +6,6 @@ resource "aws_vpc" "ecs_vpc" {
   cidr_block = var.vpc_cidr_block
 
   tags = {
-    Name = "VPC for ECS Cluster Project"
+    Name = "VPC for ECS Cluster Project Week 20"
   }
 }
