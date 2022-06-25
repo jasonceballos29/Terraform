@@ -12,7 +12,7 @@ resource "aws_subnet" "priv_subnet_1" {
   }
 }
 
-
+#Creating another private subnet in a different AZ for redundancy
 resource "aws_subnet" "priv_subnet_2" {
   vpc_id            = aws_vpc.ecs_vpc.id
   cidr_block        = "10.0.3.0/24"
