@@ -2,7 +2,7 @@
 # Authored by Jason Ceballos
 # 06/25/2022
 
-# Create var.az_count private subnets, each in a different AZ for redundancy
+# Create private subnets, each in a different AZ for redundancy
 resource "aws_subnet" "priv_subnet1" {
   vpc_id            = aws_vpc.ecs_vpc.id
   cidr_block        = "10.0.2.0/24"
