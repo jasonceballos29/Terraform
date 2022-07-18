@@ -8,7 +8,7 @@ resource "aws_ecs_service" "demo-ecs-service-two" {
   task_definition = aws_ecs_task_definition.demo-ecs-task-definition.arn
   launch_type     = "FARGATE"
   network_configuration {
-    subnets          = ["subnet-05t93f90b22ba76qx"]
+    subnets          = [aws_subnet.priv_subnet1.id, aws_subnet.priv_subnet2.id]
     assign_public_ip = true
   }
   desired_count = 1
@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "demo-ecs-task-definition" {
   requires_compatibilities = ["FARGATE"]
   memory                   = "1024"
   cpu                      = "512"
-  execution_role_arn       = "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
+  execution_role_arn       = "arn:aws:iam::254452634027:role/ecsTaskExecutionRole"
   container_definitions    = <<EOF
 [
   {
